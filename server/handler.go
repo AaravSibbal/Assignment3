@@ -22,6 +22,10 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	w.Write(htmlFile)
 }
 
+func (app *application) getStudents(w http.ResponseWriter, r *http.Request) {
+	
+}
+
 // func (app *application) playerRankings(w http.ResponseWriter, r *http.Request) {
 // 	players, err := psql.GetRanking(app.db, app.ctx)
 // 	if err != nil {
