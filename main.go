@@ -1,7 +1,8 @@
 package main
 
-import "fmt"
+import "github.com/AaravSibbal/COMP3005Assignment3/server"
 
-func main(){
-	fmt.Println("We are starting assignment 3")
+func main() {
+	server.Run()
+
 }
