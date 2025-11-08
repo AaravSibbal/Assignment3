@@ -2,8 +2,10 @@ package server
 
 import (
 	// "encoding/json"
+	"encoding/json"
 	"net/http"
 
+	"github.com/AaravSibbal/COMP3005Assignment3/pkg/psql"
 	// psql "github.com/AaravSibbal/COMP3005Assignment3/pkg/sql"
 )
 
@@ -23,7 +25,19 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getStudents(w http.ResponseWriter, r *http.Request) {
-	
+	studentList, err := psql.GetAllStudents(app.db, app.ctx);
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	studentListJson, err := json.Marshal(studentList);
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(studentListJson)
 }
 
 // func (app *application) playerRankings(w http.ResponseWriter, r *http.Request) {

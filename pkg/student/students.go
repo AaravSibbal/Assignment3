@@ -67,3 +67,12 @@ func (sl *StudentList) MarshalJSON() ([]byte, error) {
 
 	return json.Marshal(output)
 }
+
+func (sl *StudentList) Print(){
+	for i, stu:= range(sl.StudentArr) {
+		if(stu == nil){
+			continue;
+		}
+		fmt.Printf("%d) %d, %s, %s, %s, %v\n", i, stu.StudentsId, stu.FirstName, stu.LastName, stu.Email, stu.EnrollmentDate)
+	}
+}

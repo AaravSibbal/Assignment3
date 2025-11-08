@@ -1,0 +1,3 @@
+getStudentsBtn.addEventListener("click", ()=>{
+    getStudents()
+})
