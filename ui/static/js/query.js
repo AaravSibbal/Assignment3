@@ -9,7 +9,9 @@ function getStudents(){
         return response.json()
     }).then(jsonObj=>{
         console.log(jsonObj)
-        createStudentArrFromJson(jsonObj)
+        const stuArr = createStudentArrFromJson(jsonObj)
+        studentArrToTable(stuArr)
+
     }).catch(error => {
         console.error("there was a problem with the fetch operating\n\n"+error)
     })
@@ -35,9 +37,13 @@ function addStudentInDB(student){
     })
     .then(jsonObj=>{
         console.log(jsonObj)
+        addStudentResponseError.innerText = jsonObj.message
     })
     .catch(error=>{
         console.error("there was an error adding our boy: n\n\n"+error)
+    })
+    .finally(()=>{
+        getStudents()
     })
 }
 
@@ -61,9 +67,13 @@ function updateStudentEmailInDb(student){
     })
     .then(jsonObj=>{
         console.log(jsonObj)
+        updateEmailResponseError.innerText = jsonObj.message
     })
     .catch(error=>{
         console.error("there was an error adding our boy: n\n\n"+error)
+    })
+    .finally(()=>{
+        getStudents()
     })
 }
 
@@ -87,8 +97,12 @@ function deleteStudentInDb(student){
     })
     .then(jsonObj=>{
         console.log(jsonObj)
+        deleteStudentResponseError.innerText = jsonObj.message
     })
     .catch(error=>{
         console.error("there was an error adding our boy: n\n\n"+error)
+    })
+    .finally(()=>{
+        getStudents()
     })
 }

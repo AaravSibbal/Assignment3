@@ -1,14 +1,12 @@
 package server
 
 import (
-	// "encoding/json"
 	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/AaravSibbal/COMP3005Assignment3/pkg/psql"
 	"github.com/AaravSibbal/COMP3005Assignment3/pkg/student"
-	// psql "github.com/AaravSibbal/COMP3005Assignment3/pkg/sql"
 )
 
 func (app *application) pong(w http.ResponseWriter, r *http.Request) {
@@ -77,9 +75,8 @@ func (app *application) updateEmail(w http.ResponseWriter, r *http.Request){
 		json.NewEncoder(w).Encode(psql.ConvertErrorToJsonObj(err))
 		return
 	}
-	// fmt.Printf()
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(psql.SuccessMessage{Message: "Email was updates successfully"})
+	json.NewEncoder(w).Encode(psql.SuccessMessage{Message: "Email was updated successfully"})
 }
 
 func (app *application) deleteStudent(w http.ResponseWriter, r *http.Request){

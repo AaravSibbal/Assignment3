@@ -21,7 +21,7 @@ function createStudentArrFromJson(obj){
 
     for(let i=0; i<len; i++){
         let studentObj = obj.students[i]
-        let student = new Student(studentObj.students_id, 
+        let student = new Student(studentObj.student_id, 
             studentObj.first_name, studentObj.last_name, 
             studentObj.email, studentObj.enrollment_date);
             students.push(student)
@@ -29,6 +29,34 @@ function createStudentArrFromJson(obj){
         // rankingTableBody.appendChild(playerHTMLRow)
     }
     console.log(students);
+    return students;
+}
+
+/**
+ * 
+ * @param {HTMLTableRowElement} row 
+ * @param {*} value 
+ */
+function addCellToRow(row, value){
+    const cell = row.insertCell()
+    cell.textContent = value
+}
+
+/**
+ * 
+ * @param {Student[]} studentArr 
+ */
+function studentArrToTable(studentArr){
+    tableBody.innerHTML = ""
+    for(let i=0; i<studentArr.length; i++){
+        const stu = studentArr[i]
+        const row = tableBody.insertRow();
+        addCellToRow(row, stu.student_id)
+        addCellToRow(row, stu.first_name)
+        addCellToRow(row, stu.last_name)
+        addCellToRow(row, stu.email)
+        addCellToRow(row, stu.enrollment_date)
+    }
 }
 
 function createStudentFromInput(){
