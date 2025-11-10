@@ -81,3 +81,22 @@ func (app *application) updateEmail(w http.ResponseWriter, r *http.Request){
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(psql.SuccessMessage{Message: "Email was updates successfully"})
 }
+
+func (app *application) deleteStudent(w http.ResponseWriter, r *http.Request){
+	var student student.Student
+	err := json.NewDecoder(r.Body).Decode(&student)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	fmt.Printf("Recieved Student Data: %+v\n", student)
+	err = psql.DeleteStudent(app.db, app.ctx, &student)
+	w.Header().Set("Content-Type", "application/json")
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(psql.ConvertErrorToJsonObj(err))
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(psql.SuccessMessage{Message: "Student was deleted"})
+}

@@ -99,3 +99,19 @@ function updateStudentEmail(){
     console.log(student)
     updateStudentEmailInDb(student)
 }
+
+function deleteStudent(){
+    clearErrorMsgs(deleteErrorMsgId, deleteStudentResponseError)
+    let isFieldEmpty = areInputFieldsFilled(deleteInputList)
+    if(isFieldEmpty){
+        return
+    }
+    if(parseInt(updateIdInput.value) != parseFloat(updateIdInput.value)){
+        document.getElementById('update-id-error').innerText = "This value has to be an integer"
+        return
+    }
+    let studentId = parseInt(deleteIdInput.value)
+    let student = new Student(studentId, null, null, null, null)
+    console.log(student)
+    deleteStudentInDb(student)
+}

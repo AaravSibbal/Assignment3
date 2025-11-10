@@ -111,3 +111,35 @@ func UpdateEmail(db *sql.DB, ctx *context.Context, stu *student.Student) error {
 
 	return nil
 }
+
+func DeleteStudent(db *sql.DB, ctx *context.Context, stu *student.Student) error {
+	newCtx, cancel := context.WithTimeout(*ctx, time.Second*5)
+	defer cancel()
+	
+	stmt, err := db.PrepareContext(newCtx, "DELETE FROM students WHERE student_id = $1;")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close();
+
+	_, err = stmt.ExecContext(newCtx, stu.StudentsId)
+	if err != nil {
+		var pqErr *pq.Error
+		
+		if errors.As(err, &pqErr){
+			switch PsqlErrors(pqErr.Code) {
+			case UniqueConstraintError:
+				fmt.Printf("DB ERROR: Unique constraint is broken on: %s\n", pqErr.Constraint)
+				return errors.New("email already exists")
+			case NotNullError:
+				fmt.Printf("DB ERROR: not null voilation on column: %s\n", pqErr.Column)
+				return fmt.Errorf("required field is missing: %s", pqErr.Column)
+			default:
+				fmt.Printf("Unhandeled psql state: %s - %s\n", pqErr.Code, pqErr.Message)
+				return errors.New("an unexpected database error has occurred")
+			}	
+		}
+	}	
+
+	return nil
+}

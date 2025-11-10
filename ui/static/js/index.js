@@ -9,7 +9,9 @@ const updateIdInput = document.getElementById('update-id-input')
 const updateEmailInput = document.getElementById('update-email-input')
 const updateEmailBtn = document.getElementById('update-email-btn')
 const updateEmailResponseError = document.getElementById('update-email-response-error')
-
+const deleteIdInput = document.getElementById('delete-id-input')
+const deleteStudentBtn = document.getElementById('delete-student-btn')
+const deleteStudentResponseError = document.getElementById('delete-student-response-error')
 
 /**
  * @type {HTMLInputElement[]|null}
@@ -22,6 +24,9 @@ const addErrorMsgId = ['add-first-name-error', 'add-last-name-error','add-date-e
  */
 const updateInputList = [updateEmailInput, updateIdInput];
 const updateErrorMsgId = ['update-id-input', 'update-email-input']
+
+const deleteInputList = [deleteIdInput]
+const deleteErrorMsgId = ['delete-id-error']
 /**
  * @type {Student[]}
  */

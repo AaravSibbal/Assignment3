@@ -9,3 +9,7 @@ addStudentBtn.addEventListener('click', ()=>{
 updateEmailBtn.addEventListener('click', ()=>{
     updateStudentEmail()
 })
+
+deleteStudentBtn.addEventListener('click', ()=>{
+    deleteStudent()
+})

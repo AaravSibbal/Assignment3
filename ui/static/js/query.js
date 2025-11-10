@@ -67,3 +67,28 @@ function updateStudentEmailInDb(student){
     })
 }
 
+function deleteStudentInDb(student){
+    console.log(JSON.stringify(student));
+    
+    fetch("/student", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(student)
+    })
+    .then(async response=>{
+        if(!response.ok){
+            const errorBody = await response.json()
+            updateEmailResponseError.innerText = errorBody.message 
+            throw new Error("http Error")
+        }
+        return response.json()
+    })
+    .then(jsonObj=>{
+        console.log(jsonObj)
+    })
+    .catch(error=>{
+        console.error("there was an error adding our boy: n\n\n"+error)
+    })
+}
