@@ -3,9 +3,11 @@ package server
 import (
 	// "encoding/json"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/AaravSibbal/COMP3005Assignment3/pkg/psql"
+	"github.com/AaravSibbal/COMP3005Assignment3/pkg/student"
 	// psql "github.com/AaravSibbal/COMP3005Assignment3/pkg/sql"
 )
 
@@ -40,53 +42,42 @@ func (app *application) getStudents(w http.ResponseWriter, r *http.Request) {
 	w.Write(studentListJson)
 }
 
-// func (app *application) playerRankings(w http.ResponseWriter, r *http.Request) {
-// 	players, err := psql.GetRanking(app.db, app.ctx)
-// 	if err != nil {
-// 		app.serverError(w, err)
-// 		return
-// 	}
+func (app *application) addStudent(w http.ResponseWriter, r *http.Request){
+	var student student.Student
+	err := json.NewDecoder(r.Body).Decode(&student)
+	if err != nil {
+		app.serverError(w, err);
+		return
+	}
+	fmt.Printf("Recieved Student: %+v", student);
+	err = psql.AddStudent(app.db, app.ctx, &student)
 
-// 	playersJson, err := json.Marshal(players)
-// 	if err != nil {
-// 		app.serverError(w, err)
-// 		return
-// 	}
+	w.Header().Set("Content-Type", "application/json")
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(psql.ConvertErrorToJsonObj(err))
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(psql.SuccessMessage{Message: "Student was created"})
+}
 
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.Write(playersJson)
-// }
+func (app *application) updateEmail(w http.ResponseWriter, r *http.Request){
+	var student student.Student
+	err := json.NewDecoder(r.Body).Decode(&student)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	fmt.Printf("Recieved Student Data: %+v\n", student)
+	err = psql.UpdateEmail(app.db, app.ctx, &student)
+	w.Header().Set("Content-Type", "application/json")
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(psql.ConvertErrorToJsonObj(err))
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(psql.SuccessMessage{Message: "Email was updates successfully"})
+}
 
-// // func (app *application) playerStat(w http.ResponseWriter, r *http.Request) {
-// // 	name := r.URL.Query().Get(":name")
-// // 	if name == "" {
-// // 		app.clientError(w, http.StatusBadRequest)
-// // 		return
-// // 	}
-
-// // 	player, err := psql.GetPlayerData(app.db, app.ctx, name)
-// // 	if err != nil {
-// // 		app.serverError(w, err)
-// // 		return
-// // 	}
-
-// // 	playerJson, err := json.Marshal(player)
-// // 	if err != nil {
-// // 		app.serverError(w, err)
-// // 		return
-// // 	}
-
-// // 	w.Header().Set("Content-Type", "application/json")
-// // 	w.Write(playerJson)
-// // }
-
-// func (app *application) playerHtml(w http.ResponseWriter, r *http.Request) {
-// 	html, err := app.readHTMLFile("player.html")
-// 	if err != nil {
-// 		app.serverError(w, err)
-// 		return
-// 	}
-
-// 	w.Header().Set("Content-Type", "text/html")
-// 	w.Write(html)
-// }
