@@ -1,3 +1,8 @@
+/**
+ * this file contains all the global html variables
+ * for this website
+ */
+
 // get elements
 const getStudentsBtn = document.getElementById('get-students-btn');
 const tableBody = document.getElementById('student-table-body')

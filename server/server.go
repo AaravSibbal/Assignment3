@@ -13,6 +13,9 @@ import (
 	"github.com/joho/godotenv"
 )
 
+/*
+	application struct for things we need to a lot of times
+*/
 type application struct {
 	ctx            *context.Context
 	db             *sql.DB
@@ -21,21 +24,29 @@ type application struct {
 }
 
 func Run() {
+	/*
+		reading the .env file
+	*/
 	envFile, err := godotenv.Read(".env")
 	if err != nil {
 		log.Fatalf("Couldn't read the .env file %v", err)
 	}
 
+	/*
+		getting the db connection
+	*/
 	db, err := getDBConnection(envFile)
 	if err != nil {
 		log.Fatalf("could not connect to the DB: %v", err)
 	}
 
+	/*
+		setting up my loggers
+	*/
 	infoLog := log.New(os.Stdout, "INFO:\t", log.Ldate|log.Ltime)
 	errLogger := log.New(os.Stdout, "ERROR:\t", log.Ltime|log.Ldate|log.Lshortfile)
 
 	ctx := context.Background()
-
 	app := &application{
 		ctx: &ctx,
 		db: db,
@@ -43,9 +54,10 @@ func Run() {
 		errorLog: errLogger,
 
 	}
-
 	addr := fmt.Sprintf("%s:%s",envFile["ADDRESS"], envFile["PORT"])
-
+	/*
+		starting my server
+	*/
 	srv := &http.Server{
 		Addr:         addr,
 		ErrorLog:     errLogger,
@@ -61,7 +73,13 @@ func Run() {
 	
 }
 
+
+/*
+	getting the db connection
+*/
 func getDBConnection(envFile map[string]string) (*sql.DB, error){
+	
+	// reading all the relevent parameters for the connection
 	host := envFile["POSTGRES_HOST"]
 	postPort := envFile["POSTGRES_PORT"]
 	user := envFile["POSTGRES_USER"]
@@ -73,6 +91,9 @@ func getDBConnection(envFile map[string]string) (*sql.DB, error){
 
 	fmt.Println(psqlInfo)
 
+	/*
+		opening the connection to the db
+	*/
 	db, err := sql.Open("postgres", psqlInfo)
 
 	if err != nil {
@@ -80,12 +101,14 @@ func getDBConnection(envFile map[string]string) (*sql.DB, error){
 		return nil, err
 	}
 
-
+	/*
+		pinging it just to be sure
+	*/
 	if err = db.Ping(); err != nil {
 		log.Fatalln("we couldn't ping the db for some reason", err)
 	}
 
 	fmt.Println("db was connected successfuly")
-
+	// success 
 	return db, nil
 }

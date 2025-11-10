@@ -7,6 +7,10 @@ import (
 	"github.com/justinas/alice"
 )
 
+/*
+routes file contains all the routes to the website 
+and the functions that correspond to them
+*/
 func (app *application) Routes() http.Handler {
 
 	standardMiddleware := alice.New(app.logRequest, app.recoverPanic, app.secureHeaders)
@@ -19,9 +23,6 @@ func (app *application) Routes() http.Handler {
 	mux.Post("/student/add", standardMiddleware.ThenFunc(app.addStudent))
 	mux.Post("/student/email/update", standardMiddleware.ThenFunc(app.updateEmail))
 	mux.Del("/student", standardMiddleware.ThenFunc(app.deleteStudent))
-	// mux.Get("/player/ranking", standardMiddleware.ThenFunc(app.playerRankings))
-	// mux.Get("/player/:name", standardMiddleware.ThenFunc(app.playerHtml))
-	// mux.Get("/player/:name/stat", standardMiddleware.ThenFunc(app.playerStat))
 
 	fileServer := http.FileServer(http.Dir("ui/static/"))
 	mux.Get("/static/", http.StripPrefix("/static", fileServer))

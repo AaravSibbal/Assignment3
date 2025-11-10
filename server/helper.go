@@ -8,6 +8,7 @@ import (
 	"runtime/debug"
 )
 
+// unhandled server error function
 func (app *application) serverError(w http.ResponseWriter, err error) {
 	trace := fmt.Sprintf("%s \n\n %s", err.Error(), debug.Stack())
 
@@ -16,10 +17,14 @@ func (app *application) serverError(w http.ResponseWriter, err error) {
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 }
 
+/*
+	client error function
+*/
 func (app *application) clientError(w http.ResponseWriter, status int) {
 	http.Error(w, http.StatusText(status), status)
 }
 
+// request logger
 func (app *application) logRequest(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -29,6 +34,10 @@ func (app *application) logRequest(next http.Handler) http.Handler {
 	})
 }
 
+/*
+	making sure in the event of termination
+	http things are closed off
+*/
 func (app *application) recoverPanic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
@@ -44,6 +53,9 @@ func (app *application) recoverPanic(next http.Handler) http.Handler {
 	})
 }
 
+/*
+	securing the site
+*/
 func (app *application) secureHeaders(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +66,10 @@ func (app *application) secureHeaders(next http.Handler) http.Handler {
 	})
 }
 
+
+/*
+	code for reading html in RAM, so we can send it later
+*/
 func (app *application) readHTMLFile(name string) ([]byte, error) {
 	file, err := os.OpenFile(fmt.Sprintf("ui/html/%s", name), os.O_RDONLY, 0644)
 	if err != nil {
