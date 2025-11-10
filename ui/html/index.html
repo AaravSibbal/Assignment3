@@ -15,20 +15,30 @@
     <h2>Add Student</h2>
     
     <label for="add-first-name-input">First Name</label>
-    <input type="text" name="add-first-name-input" id="add-first-name-input" required> 
+    <input type="text" name="add-first-name-input" id="add-first-name-input" > 
     <p id="add-first-name-error"></p> 
     <label for="add-last-name-input">Last Name</label>
-    <input type="text" name="add-last-name-input" id="add-last-name-input" required>
+    <input type="text" name="add-last-name-input" id="add-last-name-input" >
     <p id="add-last-name-error"></p>
     <label for="add-email-input">Email: </label>
-    <input type="text" name="add-email-input" id="add-email-input" required>
+    <input type="text" name="add-email-input" id="add-email-input" >
     <p id="add-email-error"></p>
     <label for="add-date-input">Enrollment Date</label>
-    <input type="date" name="add-date-input" id="add-date-input" required>
+    <input type="date" name="add-date-input" id="add-date-input" >
     <p id="add-date-error"></p>
-    <button type="submit" id="add-student-btn">Add Student</button> 
+    <button id="add-student-btn">Add Student</button> 
     <p id="add-student-response-error"></p>
     
+    <h2>Update Email</h2>
+
+    <label for="update-id-input">ID: </label>
+    <input type="number" name="update-id-input" id="update-id-input">
+    <p id="update-id-error"></p>
+    <label for="update-email-input">Email: </label>
+    <input type="text" name="update-email-input" id="update-email-input">
+    <p id="update-email-error"></p>
+    <button id="update-email-btn">Update Email</button>
+    <p id="update-email-response-error"></p>
     <script src="../static/js/index.js"></script>
     <script src="../static/js/eventHandler.js"></script>
     <script src="../static/js/students.js"></script>

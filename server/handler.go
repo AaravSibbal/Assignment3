@@ -77,7 +77,7 @@ func (app *application) updateEmail(w http.ResponseWriter, r *http.Request){
 		json.NewEncoder(w).Encode(psql.ConvertErrorToJsonObj(err))
 		return
 	}
+	// fmt.Printf()
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(psql.SuccessMessage{Message: "Email was updates successfully"})
 }
-

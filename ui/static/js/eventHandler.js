@@ -5,3 +5,7 @@ getStudentsBtn.addEventListener("click", ()=>{
 addStudentBtn.addEventListener('click', ()=>{
     addStudent()
 })
+
+updateEmailBtn.addEventListener('click', ()=>{
+    updateStudentEmail()
+})

@@ -44,31 +44,58 @@ function createStudentFromInput(){
 /**
  * clear out the error messages in the add student form
  */
-function clearErrorMsgs(){
-    for(let i=0; i<errorMsgId.length; i++){
-        document.getElementById(errorMsgId[i]).innerText = ""
+
+/**
+ * 
+ * @param {string[]} errorIds 
+ * @param {HTMLParagraphElement} responseErrorElem
+ */
+function clearErrorMsgs(errorIds, responseErrorElem){
+    for(let i=0; i<errorIds.length; i++){
+        document.getElementById(errorIds[i]).innerText = ""
     }
-    addStudentResponseError.innerText = ""
+    responseErrorElem.innerText = ""
 }
 
-function addStudent(){
-    clearErrorMsgs()
-    // check for the empty field
-    let isFieldEmpty = false;
-    for(let i=0; i<addInputList.length; i++){
-        if(addInputList[i].value == ""){
-            let id = addInputList[i].id
-            let errorId = id.substring(0, id.length-6) +"-error"
-            console.log(errorId);
+function areInputFieldsFilled(inputElemList){
+    let isFieldEmpty = false
+    for(let i=0; i<inputElemList.length; i++){
+        if(inputElemList[i].value == "" || inputElemList[i].value == null){
+            let id = inputElemList[i].id
+            let errorId = id.substring(0, id.length-6)+"-error"
             let errorElem = document.getElementById(errorId)
-            errorElem.innerText = "This field is required" 
+            errorElem.innerText = "This field is required"
             isFieldEmpty = true
         }
     }
+    return isFieldEmpty
+
+}
+
+function addStudent(){
+    clearErrorMsgs(addErrorMsgId, addStudentResponseError)
+    // check for the empty field
+    let isFieldEmpty = areInputFieldsFilled(addInputList)
     if(isFieldEmpty){
         return
     }
     let student = createStudentFromInput()
     console.log(student);
-    addStudentInDB( student)
+    addStudentInDB(student)
+}
+
+function updateStudentEmail(){
+    clearErrorMsgs(updateErrorMsgId, updateEmailResponseError)
+    let isFieldEmpty = areInputFieldsFilled(updateInputList)
+    if(isFieldEmpty){
+        return
+    }
+
+    if(parseInt(updateIdInput.value) != parseFloat(updateIdInput.value)){
+        document.getElementById('update-id-error').innerText = "This value has to be an integer"
+        return
+    }
+    let student = new Student(parseInt(updateIdInput.value), null, null, updateEmailInput.value, null)
+    console.log(student)
+    updateStudentEmailInDb(student)
 }

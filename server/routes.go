@@ -17,6 +17,7 @@ func (app *application) Routes() http.Handler {
 	mux.Get("/", standardMiddleware.ThenFunc(app.home))
 	mux.Get("/students", standardMiddleware.ThenFunc(app.getStudents))
 	mux.Post("/student/add", standardMiddleware.ThenFunc(app.addStudent))
+	mux.Post("/student/email/update", standardMiddleware.ThenFunc(app.updateEmail))
 	// mux.Get("/player/ranking", standardMiddleware.ThenFunc(app.playerRankings))
 	// mux.Get("/player/:name", standardMiddleware.ThenFunc(app.playerHtml))
 	// mux.Get("/player/:name/stat", standardMiddleware.ThenFunc(app.playerStat))
