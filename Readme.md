@@ -18,3 +18,6 @@ Student Number: 101215994
     - ```go mod tidy```: this will download the dependencies required to run the program
 
     - ```go run main.go```: this will create the binary required to run the file and execute it.
+
+    ## Video Demonstation Link
+    https://youtu.be/lwGeLs80ewA
